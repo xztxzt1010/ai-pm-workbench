@@ -1,0 +1,23 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local secrets and data
+.env
+.env.*
+!.env.example
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.log
+backups/
+
+# Build artifacts if source is added later
+node_modules/
+dist/
+target/
+src-tauri/target/
+
