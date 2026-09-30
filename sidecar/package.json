@@ -1,0 +1,24 @@
+﻿{
+    "name":  "assistant-product-manager-sidecar",
+    "version":  "0.2.0",
+    "private":  true,
+    "type":  "module",
+    "scripts":  {
+                    "start":  "node src/index.mjs",
+                    "test":  "node --test",
+                    "build":  "node scripts/build-sea.mjs",
+                    "verify":  "node scripts/verify-sea.mjs"
+                },
+    "dependencies":  {
+                         "@mastra/core":  "1.51.0",
+                         "ajv":  "8.20.0"
+                     },
+    "devDependencies":  {
+                            "esbuild":  "0.25.9",
+                            "postject":  "1.0.0-alpha.6"
+                        },
+    "license":  "MIT",
+    "description":  "Loopback-only authenticated AI provider sidecar for the AI PM workspace.",
+    "author":  "xztxzt1010",
+    "repository":  "https://github.com/xztxzt1010/ai-pm-workbench"
+}

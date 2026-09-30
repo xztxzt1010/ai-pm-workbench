@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SVG 图表视觉验收</title>
+    <style>
+      body { margin: 0; padding: 24px; background: #e2e8f0; font-family: "Segoe UI", "Microsoft YaHei", sans-serif; }
+      main { max-width: 1000px; margin: 0 auto; }
+      h1 { margin: 0 0 16px; font-size: 20px; }
+      #preview { overflow: auto; border-radius: 12px; box-shadow: 0 8px 30px rgb(15 23 42 / 12%); }
+      svg { display: block; max-width: 100%; height: auto; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>真实 analysisToSvg 中文长标签验收夹具</h1>
+      <div id="preview" aria-live="polite"></div>
+    </main>
+    <script type="module" src="./analysis-chart-preview.ts"></script>
+  </body>
+</html>

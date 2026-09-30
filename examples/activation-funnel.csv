@@ -1,0 +1,11 @@
+user_id,registered,workspace_created,member_invited,first_value_action,variant
+u001,1,1,1,1,control
+u002,1,1,0,1,control
+u003,1,1,0,0,control
+u004,1,0,0,0,control
+u005,1,1,1,1,treatment
+u006,1,1,1,1,treatment
+u007,1,1,0,1,treatment
+u008,1,1,0,0,treatment
+u009,1,0,0,0,treatment
+u010,1,1,1,1,treatment

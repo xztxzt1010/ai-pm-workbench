@@ -1,0 +1,69 @@
+CREATE TABLE agent_tool_proposals_v3 (
+  id TEXT PRIMARY KEY NOT NULL,
+  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+  target_type TEXT NOT NULL CHECK (target_type IN ('research_plan', 'project_risk', 'project_dependency')),
+  target_id TEXT NOT NULL,
+  agent_run_id TEXT NOT NULL REFERENCES agent_runs(id) ON DELETE CASCADE,
+  agent_definition_id TEXT NOT NULL REFERENCES agent_definitions(id),
+  tool_key TEXT NOT NULL,
+  expected_target_updated_at TEXT NOT NULL,
+  payload_json TEXT NOT NULL CHECK (json_valid(payload_json) AND json_type(payload_json) = 'object'),
+  evidence_json TEXT NOT NULL CHECK (json_valid(evidence_json) AND json_type(evidence_json) = 'array'),
+  rationale TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending_confirmation'
+    CHECK (status IN ('pending_confirmation', 'executed', 'rejected', 'stale')),
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  reviewed_at TEXT,
+  executed_at TEXT,
+  CHECK (
+    (target_type = 'research_plan' AND agent_definition_id = 'plan-engineer:v2'
+      AND tool_key = 'update_research_plan') OR
+    (target_type = 'project_risk' AND agent_definition_id = 'risk-review:v2'
+      AND tool_key = 'update_project_risk') OR
+    (target_type = 'project_dependency' AND agent_definition_id = 'dependency-remediation:v1'
+      AND tool_key = 'update_project_dependency')
+  ),
+  UNIQUE (agent_run_id, target_type, target_id, payload_json)
+);
+
+INSERT INTO agent_tool_proposals_v3
+SELECT id, project_id, target_type, target_id, agent_run_id, agent_definition_id,
+       tool_key, expected_target_updated_at, payload_json, evidence_json, rationale,
+       status, created_at, updated_at, reviewed_at, executed_at
+FROM agent_tool_proposals;
+
+DROP TRIGGER delete_research_plan_tool_proposals;
+DROP TRIGGER delete_project_risk_tool_proposals;
+DROP TABLE agent_tool_proposals;
+ALTER TABLE agent_tool_proposals_v3 RENAME TO agent_tool_proposals;
+
+CREATE INDEX idx_agent_tool_proposals_project_status
+  ON agent_tool_proposals(project_id, status, created_at DESC);
+
+CREATE TRIGGER delete_research_plan_tool_proposals
+AFTER DELETE ON research_plans BEGIN
+  DELETE FROM agent_tool_proposals
+  WHERE target_type = 'research_plan' AND target_id = OLD.id;
+END;
+
+CREATE TRIGGER delete_project_risk_tool_proposals
+AFTER DELETE ON project_risks BEGIN
+  DELETE FROM agent_tool_proposals
+  WHERE target_type = 'project_risk' AND target_id = OLD.id;
+END;
+
+CREATE TRIGGER delete_project_dependency_tool_proposals
+AFTER DELETE ON project_dependencies BEGIN
+  DELETE FROM agent_tool_proposals
+  WHERE target_type = 'project_dependency' AND target_id = OLD.id;
+END;
+
+INSERT INTO agent_definitions
+  (id, definition_key, version, name, description, input_schema_version, output_schema_version, permissions_json, created_at)
+VALUES
+  ('dependency-remediation:v1', 'dependency-remediation', 1, '项目依赖处置提案 Agent v1',
+   '只读取当前活动项目未解决依赖，生成负责人、截止日期和解决条件的结构化提案；提案仅由用户确认后的确定性执行器应用，不改变标题、描述、依赖类型或状态。',
+   '1.0.0', '1.0.0',
+   '{"dataScope":"current_project_unresolved_dependencies","allowedTools":["read_project_dependencies","update_project_dependency"],"businessWriteAccess":true,"requiresCitations":true,"proposalOnly":true,"userConfirmationRequired":true}',
+   '2026-07-17T00:00:00.000Z');
