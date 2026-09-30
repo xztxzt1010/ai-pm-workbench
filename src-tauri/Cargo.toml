@@ -1,4 +1,4 @@
-﻿[package]
+[package]
 name = "app"
 version = "0.2.0"
 description = "Local-first AI product manager workspace"

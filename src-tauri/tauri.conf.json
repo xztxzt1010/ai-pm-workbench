@@ -1,4 +1,4 @@
-﻿{
+{
     "$schema":  "../node_modules/@tauri-apps/cli/config.schema.json",
     "productName":  "Assistant Product Manager",
     "version":  "0.2.0",
