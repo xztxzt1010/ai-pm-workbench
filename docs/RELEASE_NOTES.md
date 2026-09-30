@@ -2,8 +2,8 @@
 
 ## 0.2.0（Source Preview）
 
-发布类型：源码预览（source preview）  
-发布物：源码、测试、文档与验证命令  
+发布类型：源码预览（source preview）
+发布物：源码、测试、文档与验证命令
 安装包：无（assets = 0，不存在受支持的 Windows 安装器）
 
 ### 核心能力

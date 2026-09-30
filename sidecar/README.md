@@ -1,6 +1,6 @@
-# Assistant Product Manager Mastra Sidecar
+# Assistant Product Manager Sidecar
 
-本目录是独立于 React 前端的 Node/Mastra 运行时。当前安全协议版本为 1：
+本目录是独立于 React 前端的 Node Sidecar 运行时。当前安全协议版本为 1：
 
 - 只监听 IPv4 回环地址 `127.0.0.1`，端口由操作系统动态分配。
 - 启动时必须通过 `APM_SIDECAR_TOKEN` 提供 32–512 字符的会话令牌。

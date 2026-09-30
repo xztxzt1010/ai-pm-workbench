@@ -25,7 +25,7 @@ test("binds only to IPv4 loopback and requires the session token", async () => {
 
     const authorized = await fetch(`http://${host}:${port}/health`, { headers: { authorization: `Bearer ${token}` } })
     assert.equal(authorized.status, 200)
-    assert.deepEqual(await authorized.json(), { status: "ok", runtime: "mastra", protocolVersion: 1 })
+    assert.deepEqual(await authorized.json(), { status: "ok", runtime: "apm-sidecar", protocolVersion: 1 })
     assert.equal(authorized.headers.get("cache-control"), "no-store")
   })
 })
@@ -401,7 +401,7 @@ test("provider health endpoint survives both upstream failure modes", async () =
     assert.equal((await (await call()).json()).state, "unavailable")
     const health = await fetch(`http://${host}:${port}/health`, { headers: { authorization: `Bearer ${token}` } })
     assert.equal(health.status, 200)
-    assert.deepEqual(await health.json(), { status: "ok", runtime: "mastra", protocolVersion: 1 })
+    assert.deepEqual(await health.json(), { status: "ok", runtime: "apm-sidecar", protocolVersion: 1 })
   }, { fetchImpl: upstream })
 })
 

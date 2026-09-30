@@ -122,4 +122,3 @@ CREATE INDEX IF NOT EXISTS idx_confirmation_project ON confirmation_items(projec
 CREATE INDEX IF NOT EXISTS idx_meetings_project_date ON meetings(project_id, meeting_date);
 CREATE INDEX IF NOT EXISTS idx_requirement_cards_meeting ON requirement_cards(meeting_id);
 CREATE INDEX IF NOT EXISTS idx_notifications_schedule ON notifications(status, scheduled_at);
-

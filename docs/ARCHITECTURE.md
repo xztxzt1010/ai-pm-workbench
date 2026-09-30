@@ -76,7 +76,7 @@ Tauri SQLite / Rust 原生命令 / 浏览器开发适配器
 
 ## Sidecar 安全协议
 
-- Mastra 运行时位于独立 `sidecar` 工作区，不进入 React/Vite 依赖图；Tauri 是唯一允许持有会话令牌并转发敏感请求的调用方。
+- Sidecar 运行时位于独立 `sidecar` 工作区，不进入 React/Vite 依赖图；Tauri 是唯一允许持有会话令牌并转发敏感请求的调用方。
 - Sidecar 每次进程启动使用新的随机会话令牌和动态端口，只绑定 `127.0.0.1`；错误或缺失令牌统一返回 401。
 - 健康响应只暴露状态、运行时名称和协议版本；标准输出的 ready 事件不得包含令牌、Provider 凭据或请求正文。
 - 当前协议版本 1 实现健康检查、关闭、Provider 探测、结构化生成和外部研究搜索端点。开发态 Tauri 通过 Shell 启动 Node Sidecar；发布态通过 `externalBin` 启动由 Node SEA 生成的 `apm-sidecar-<target>.exe`。两种模式都使用 Rust 生成的临时令牌校验 ready/health，并允许一次崩溃重启；React 只能通过 Tauri Command 使用协议并读取脱敏状态。NSIS/干净机器验收和代码签名仍需单独完成，不能绕过这些边界让 React 直连 Sidecar。

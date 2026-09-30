@@ -25,3 +25,6 @@ host-install-backups/
 
 # ==== 本机个人配置（跨机器不可复现，不应进入版本库）====
 .claude/settings.local.json
+.agents/
+.claude/
+.cargo/
