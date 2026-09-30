@@ -74,7 +74,7 @@ npm run build:installer
 - 清单包含安装包和 Sidecar 的文件名、大小、SHA-256、版本号；
 - 安装脚本以非零退出码停止时，不得把失败误报为安装包生成成功。
 
-当前已知环境限制：主机 Rust proc-macro 编译曾在 `thiserror_impl` 阶段报 `E0463`，该次没有 NSIS 产物。隔离虚拟机已具备构建工具链，但尚未复制项目、运行 Rust/Tauri 或生成 NSIS；详细门禁见 [`VM_BUILD_ENVIRONMENT_ACCEPTANCE_2026-08-04.md`](./VM_BUILD_ENVIRONMENT_ACCEPTANCE_2026-08-04.md)。
+当前已知环境限制：主机 Rust proc-macro 编译曾在 `thiserror_impl` 阶段报 `E0463`，该次没有 NSIS 产物。隔离虚拟机已具备构建工具链，但尚未复制项目、运行 Rust/Tauri 或生成 NSIS；详细门禁见 内部环境验收记录（不进入公开快照）。
 
 ## 干净 Windows 人工验收
 
@@ -107,10 +107,10 @@ npm.cmd run verify:release-acceptance -- --record "<验收记录绝对路径>" -
 
 ## 正式交付材料
 
-- [用户手册](../../USER_GUIDE.md)
-- [隐私与数据说明](../../PRIVACY_AND_DATA.md)
-- [0.1.0 版本说明](../../RELEASE_NOTES.md)
-- [“新用户激活改进”示例项目](../../../examples/README.md)
-- [浏览器布局与可访问性验收记录](./P9_BROWSER_UI_ACCEPTANCE.md)
+- [用户手册](../USER_GUIDE.md)
+- [隐私与数据说明](../PRIVACY_AND_DATA.md)
+- [0.1.0 版本说明](../RELEASE_NOTES.md)
+- [“新用户激活改进”示例项目](../../examples/README.md)
+- [浏览器布局与可访问性验收记录](./BROWSER_UI_ACCEPTANCE.md)
 
 示例素材不会自动写入正式数据库；只能由用户在测试工作区显式导入。文档门禁证明文件与关键边界齐备，不替代内容的安装态操作验证。

@@ -128,4 +128,4 @@ Sidecar 首次异常退出会自动重启一次；再次失败时 AI 降级，�
 
 数据位置、外部传输、凭据、删除和卸载策略见 [隐私与数据说明](./PRIVACY_AND_DATA.md)。版本能力和已知限制见 [版本说明](./RELEASE_NOTES.md)。可重复的示例闭环见 [示例项目指南](../examples/README.md)。
 
-正式发布前还必须完成 [P9 发布前验收清单](./project-management/reports/P9_RELEASE_CHECKLIST.md)；自动化预检通过不等于安装态验收完成。
+正式发布前还必须完成 [P9 发布前验收清单](./acceptance/RELEASE_CHECKLIST.md)；自动化预检通过不等于安装态验收完成。
