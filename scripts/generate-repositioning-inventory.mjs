@@ -1,5 +1,5 @@
 import { DatabaseSync } from "node:sqlite"
-import { mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs"
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync  } from "node:fs"
 import { dirname, join, relative } from "node:path"
 
 const root = process.cwd()
@@ -179,6 +179,12 @@ if (mode === "--write") {
   writeFileSync(outputPath, rendered, "utf8")
   console.log(`updated ${relative(root, outputPath)}`)
 } else if (mode === "--check") {
+  if (!existsSync(outputPath)) {
+    console.log(
+      "skipped " + relative(root, outputPath) + " (internal inventory not present in this snapshot)"
+    )
+    process.exit(0)
+  }
   const existing = readFileSync(outputPath, "utf8")
   if (existing !== rendered) {
     throw new Error(
