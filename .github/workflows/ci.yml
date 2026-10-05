@@ -83,6 +83,12 @@ jobs:
       - name: Install frontend dependencies
         run: npm ci
 
+      - name: Install sidecar dependencies
+        run: npm --prefix sidecar ci
+
+      - name: Build sidecar binary for Tauri externalBin
+        run: npm run sidecar:build
+
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
         with:

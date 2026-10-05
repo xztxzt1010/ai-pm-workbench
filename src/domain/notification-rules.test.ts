@@ -18,14 +18,14 @@ describe("notification rules", () => {
   it("没有设置时间时使用本地上午九点", () => {
     const schedule = buildNotificationSchedule(base)
     expect(new Date(schedule!.scheduledAt).getHours()).toBe(9)
-    expect(dueNotificationSchedules([base], new Date("2026-07-13T08:59:00+08:00"))).toHaveLength(0)
-    expect(dueNotificationSchedules([base], new Date("2026-07-13T09:00:00+08:00"))).toHaveLength(1)
+    expect(dueNotificationSchedules([base], new Date("2026-07-13T08:59:00"))).toHaveLength(0)
+    expect(dueNotificationSchedules([base], new Date("2026-07-13T09:00:00"))).toHaveLength(1)
   })
 
   it("尊重用户设置的具体提醒时间", () => {
     const item = { ...base, dueTime: "14:30" }
-    expect(dueNotificationSchedules([item], new Date("2026-07-13T14:29:59+08:00"))).toHaveLength(0)
-    expect(dueNotificationSchedules([item], new Date("2026-07-13T14:30:00+08:00"))).toHaveLength(1)
+    expect(dueNotificationSchedules([item], new Date("2026-07-13T14:29:59"))).toHaveLength(0)
+    expect(dueNotificationSchedules([item], new Date("2026-07-13T14:30:00"))).toHaveLength(1)
   })
 
   it("完成或取消事项不再生成提醒", () => {
@@ -44,7 +44,7 @@ describe("notification rules", () => {
     const schedule = buildNotificationSchedule(base, "18:45")
     expect(new Date(schedule!.scheduledAt).getHours()).toBe(18)
     expect(notificationDeduplicationKey(base, "18:45")).not.toBe(notificationDeduplicationKey(base, "09:00"))
-    expect(dueNotificationSchedules([base], new Date("2026-07-13T18:45:00+08:00"), "18:45")).toHaveLength(1)
+    expect(dueNotificationSchedules([base], new Date("2026-07-13T18:45:00"), "18:45")).toHaveLength(1)
   })
 
   it("只接受 24 小时制的有效提醒时间", () => {
@@ -57,6 +57,6 @@ describe("notification rules", () => {
   it("保留未来调度，只有到期筛选才移除未来项", () => {
     const schedules = notificationSchedules([base], "18:45")
     expect(schedules).toHaveLength(1)
-    expect(dueNotificationSchedules([base], new Date("2026-07-13T18:00:00+08:00"), "18:45")).toHaveLength(0)
+    expect(dueNotificationSchedules([base], new Date("2026-07-13T18:00:00"), "18:45")).toHaveLength(0)
   })
 })
