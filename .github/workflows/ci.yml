@@ -37,6 +37,12 @@ jobs:
       - name: Install sidecar dependencies
         run: npm --prefix sidecar ci
 
+      - name: Version metadata gate
+        run: npm run verify:version-metadata
+
+      - name: shadcn CLI removal gate
+        run: npm run verify:no-shadcn-cli
+
       - name: Frontend tests
         run: npm test
 
@@ -91,3 +97,31 @@ jobs:
 
       - name: Cargo lib tests
         run: cargo test --lib --manifest-path src-tauri/Cargo.toml
+
+  dependency-audit:
+    name: dependency-audit (ubuntu)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Install sidecar dependencies
+        run: npm --prefix sidecar ci
+
+      - name: Audit root dependencies
+        run: npm audit --audit-level=low --registry=https://registry.npmjs.org
+
+      - name: Audit sidecar dependencies
+        run: npm --prefix sidecar audit --audit-level=low --registry=https://registry.npmjs.org
+
+      # Any vulnerability at low or above fails the job.
+      # No continue-on-error; no artifact upload; no installer build.

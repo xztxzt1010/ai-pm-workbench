@@ -4,7 +4,7 @@
 
 | Field | Value |
 |---|---|
-| Source commit | `5cad111` (internal freeze + sidecar ready-gate fix + @mastra/core removal + 0.2.0 metadata gate) |
+| Source commit | `966e50e` (internal freeze + sidecar ready-gate fix + @mastra/core removal + 0.2.0 metadata gate) |
 | Snapshot method | allowlist export of tracked files only |
 | Public branch | `public/v0.2.0-source-preview` (created from `origin/main@1ae118e`) |
 | History policy | public branch is a clean tree commit; no development-repo history is merged |

@@ -4,9 +4,8 @@
  * https://github.com/shadcn-ui/ui
  *
  * Only includes data-* custom variants referenced by src/ plus the
- * no-scrollbar utility used by the sidebar. Unused utilities from the
- * upstream bundle (unused-fade, unused-shine, accordion, data-picked) are
- * intentionally omitted.
+ * no-scrollbar utility used by the sidebar. The following upstream
+ * blocks were not copied: scroll-fade, shimmer, accordion, data-selected.
  *
  * Copyright (c) 2023 shadcn
  * MIT License — see THIRD_PARTY_NOTICES.md

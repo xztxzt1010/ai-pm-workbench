@@ -60,7 +60,10 @@ if (!indexCss.includes("./styles/shadcn-variants.css")) {
 }
 
 // local variants file must exist and declare every required custom variant
-const variants = read("src/styles/shadcn-variants.css")
+const variantsRaw = read("src/styles/shadcn-variants.css");
+// Strip block comments so documentation may name omitted upstream blocks
+// without being mistaken for real CSS declarations.
+const variants = variantsRaw.replace(/\/\*[\s\S]*?\*\//g, "");
 for (const name of REQUIRED_VARIANTS) {
   if (!variants.includes(`@custom-variant ${name}`)) {
     failures.push(`src/styles/shadcn-variants.css missing @custom-variant ${name}`)
@@ -68,7 +71,7 @@ for (const name of REQUIRED_VARIANTS) {
 }
 for (const banned of ["scroll-fade", "shimmer", "accordion-down", "data-selected"]) {
   if (variants.includes(banned)) {
-    failures.push(`src/styles/shadcn-variants.css must not include unused upstream block: ${banned}`)
+    failures.push(`src/styles/shadcn-variants.css must not include unused upstream CSS declaration: ${banned}`)
   }
 }
 
