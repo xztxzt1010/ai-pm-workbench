@@ -1,0 +1,5 @@
+export const releaseStatuses = ["planned", "ready", "released", "reviewed", "cancelled"] as const
+export type ReleaseStatus = typeof releaseStatuses[number]
+export interface ReleaseDraft { title: string; scope: string[]; checklist: string[]; rollbackPlan: string; result: string; retrospective: string; followUp: string[]; targetDate: string }
+function list(items: string[]) { const value = items.map((item) => item.trim()).filter(Boolean); if (value.length > 100 || value.some((item) => item.length > 1000)) throw new Error("发布列表条目无效"); return value }
+export function validateReleaseDraft(input: ReleaseDraft): ReleaseDraft { const value = { ...input, title: input.title.trim(), scope: list(input.scope), checklist: list(input.checklist), rollbackPlan: input.rollbackPlan.trim(), result: input.result.trim(), retrospective: input.retrospective.trim(), followUp: list(input.followUp), targetDate: input.targetDate.trim() }; if (!value.title || value.title.length > 200 || value.rollbackPlan.length > 5000 || value.result.length > 5000 || value.retrospective.length > 5000 || !/^\d{4}-\d{2}-\d{2}$/.test(value.targetDate)) throw new Error("发布记录字段无效"); return value }

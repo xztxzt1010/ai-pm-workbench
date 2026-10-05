@@ -1,23 +1,30 @@
-# OS / editor
+node_modules/
+sidecar/node_modules/
+sidecar/.sea/
+sidecar/bin/
+dist/
+target/
 .DS_Store
-Thumbs.db
-.idea/
-.vscode/
-
-# Local secrets and data
+*.log
+.vite-preview.*.log
 .env
 .env.*
 !.env.example
 *.db
-*.db-*
 *.sqlite
 *.sqlite3
-*.log
-backups/
 
-# Build artifacts if source is added later
-node_modules/
-dist/
-target/
-src-tauri/target/
+# ==== 数据安全：本机真实用户数据与升级前备份（严禁上传）====
+host-install-backups/
 
+# ==== SQLite WAL/SHM 伴随文件（*.db / *.sqlite 已覆盖主文件，这里补后缀）====
+*.db-wal
+*.db-shm
+*.sqlite-wal
+*.sqlite-shm
+
+# ==== 本机个人配置（跨机器不可复现，不应进入版本库）====
+.claude/settings.local.json
+.agents/
+.claude/
+.cargo/

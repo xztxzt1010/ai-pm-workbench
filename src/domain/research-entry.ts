@@ -1,0 +1,4 @@
+export const researchTypes = ["interview", "survey", "desk", "observation"] as const
+export type ResearchType = typeof researchTypes[number]
+export interface ResearchEntryDraft { researchType: ResearchType; title: string; sourceRef: string; accessedAt: string; insight: string; personaSuggestion: string }
+export function validateResearchEntryDraft(input: ResearchEntryDraft): ResearchEntryDraft { const value = { ...input, title: input.title.trim(), sourceRef: input.sourceRef.trim(), accessedAt: input.accessedAt.trim(), insight: input.insight.trim(), personaSuggestion: input.personaSuggestion.trim() }; if (!researchTypes.includes(value.researchType) || !value.title || value.title.length > 200 || !value.sourceRef || value.sourceRef.length > 2000 || !value.insight || value.insight.length > 5000 || value.personaSuggestion.length > 2000 || !/^\d{4}-\d{2}-\d{2}$/.test(value.accessedAt)) throw new Error("研究记录字段无效"); return value }

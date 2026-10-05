@@ -1,0 +1,3 @@
+export type ResearchInsightStatus = "draft" | "accepted" | "rejected"
+export interface ResearchInsightDraft { title: string; statement: string; evidence: string[] }
+export function validateResearchInsightDraft(input: ResearchInsightDraft): ResearchInsightDraft { const evidence = input.evidence.map((item) => item.trim()).filter(Boolean); const value = { ...input, title: input.title.trim(), statement: input.statement.trim(), evidence }; if (!value.title || value.title.length > 200 || !value.statement || value.statement.length > 5000 || evidence.length > 100 || evidence.some((item) => item.length > 1000)) throw new Error("研究洞察字段无效"); return value }

@@ -1,0 +1,133 @@
+name: source-preview-ci
+
+on:
+  push:
+    branches: ["public/**", "main"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: source-preview-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  web-and-sidecar:
+    name: Web/Sidecar (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Install sidecar dependencies
+        run: npm --prefix sidecar ci
+
+      - name: Version metadata gate
+        run: npm run verify:version-metadata
+
+      - name: shadcn CLI removal gate
+        run: npm run verify:no-shadcn-cli
+
+      - name: Frontend tests
+        run: npm test
+
+      - name: Sidecar tests
+        run: npm run sidecar:test
+
+      - name: Knowledge and project-context contracts
+        run: |
+          npm run verify:knowledge-contract
+          npm run verify:project-context
+
+      - name: Security and document checks
+        run: |
+          npm run verify:security
+          npm run verify:release-docs
+
+      - name: Production build
+        run: npm run build
+
+      - name: Bundle budget
+        run: npm run verify:bundle-budget
+
+      # No real secrets, no provider calls, no installer artifacts.
+
+  rust-windows:
+    name: Rust (windows)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Install sidecar dependencies
+        run: npm --prefix sidecar ci
+
+      - name: Build sidecar binary for Tauri externalBin
+        run: npm run sidecar:build
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
+        with:
+          toolchain: stable
+          components: rustfmt
+
+      - name: Cargo fmt check
+        run: cargo fmt --manifest-path src-tauri/Cargo.toml -- --check
+
+      - name: Cargo check
+        run: cargo check --manifest-path src-tauri/Cargo.toml
+
+      - name: Cargo lib tests
+        run: cargo test --lib --manifest-path src-tauri/Cargo.toml
+
+  dependency-audit:
+    name: dependency-audit (ubuntu)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Install sidecar dependencies
+        run: npm --prefix sidecar ci
+
+      - name: Audit root dependencies
+        run: npm audit --audit-level=low --registry=https://registry.npmjs.org
+
+      - name: Audit sidecar dependencies
+        run: npm --prefix sidecar audit --audit-level=low --registry=https://registry.npmjs.org
+
+      # Any vulnerability at low or above fails the job.
+      # No continue-on-error; no artifact upload; no installer build.
