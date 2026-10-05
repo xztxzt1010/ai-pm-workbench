@@ -31,12 +31,13 @@
     "verify:project-context": "node scripts/verify-project-context.mjs",
     "verify:project-context:live": "node scripts/verify-project-context-live.mjs",
     "verify:project-context:migration-copy": "node scripts/verify-project-context-migration-copy.mjs",
-    "verify:preflight": "npm run verify:version-metadata && npm test && npm run sidecar:test && npm run verify:p8 && npm run verify:migrations && npm run verify:knowledge-contract && npm run verify:project-context && npm run verify:security && npm run verify:installer-config && npm run verify:release-manifest && npm run verify:release-acceptance && npm run verify:release-docs && npm run verify:repositioning-inventory && npm run verify:agent-evals && npm run verify:performance && npm run build && npm run verify:bundle-budget",
+    "verify:preflight": "npm run verify:no-shadcn-cli && npm run verify:version-metadata && npm test && npm run sidecar:test && npm run verify:p8 && npm run verify:migrations && npm run verify:knowledge-contract && npm run verify:project-context && npm run verify:security && npm run verify:installer-config && npm run verify:release-manifest && npm run verify:release-acceptance && npm run verify:release-docs && npm run verify:repositioning-inventory && npm run verify:agent-evals && npm run verify:performance && npm run build && npm run verify:bundle-budget",
     "shortcut:create": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/create-desktop-shortcut.ps1",
     "test:rust": "cargo test --lib --manifest-path src-tauri/Cargo.toml",
     "check:rust": "cargo fmt --manifest-path src-tauri/Cargo.toml -- --check && cargo check --manifest-path src-tauri/Cargo.toml",
-    "quality": "npm run verify:version-metadata && npm test && npm run sidecar:test && npm run verify:migrations && npm run verify:security && npm run build && npm run test:rust && npm run check:rust",
-    "verify:version-metadata": "node scripts/verify-version-metadata.mjs"
+    "quality": "npm run verify:no-shadcn-cli && npm run verify:version-metadata && npm test && npm run sidecar:test && npm run verify:migrations && npm run verify:security && npm run build && npm run test:rust && npm run check:rust",
+    "verify:version-metadata": "node scripts/verify-version-metadata.mjs",
+    "verify:no-shadcn-cli": "node scripts/verify-no-shadcn-cli.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
@@ -73,8 +74,7 @@
     "tailwindcss": "^4.3.2",
     "typescript": "^7.0.2",
     "vite": "^8.1.4",
-    "vitest": "^4.1.10",
-    "shadcn": "^4.13.0"
+    "vitest": "^4.1.10"
   },
   "license": "MIT",
   "description": "Local-first AI product manager workspace: project context, knowledge contract, and auditable AI drafts.",

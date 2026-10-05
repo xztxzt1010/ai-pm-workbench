@@ -106,4 +106,6 @@ npm run dev
 
 ## 许可证
 
+第三方 UI/variant 说明见 [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md)。
+
 源码、公开文档与自有截图采用 [MIT License](./LICENSE)。第三方依赖和素材保留各自许可证与必要声明。
